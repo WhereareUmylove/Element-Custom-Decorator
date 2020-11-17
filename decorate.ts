@@ -15,3 +15,17 @@ export const GValidate = (params: string)=>{
         return descriptor
     }
 }
+
+
+import { MessageBox } from 'element-ui';
+
+function Confirmation(target, name, descriptor) {
+    let oldValue = descriptor.value;
+    descriptor.value = function(...args) {
+        MessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示')
+            .then(oldValue.bind(this, ...args))
+            .catch(() => {});
+    };
+
+    return descriptor;
+}
