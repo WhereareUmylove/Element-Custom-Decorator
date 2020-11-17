@@ -19,13 +19,16 @@ export const GValidate = (params: string)=>{
 
 import { MessageBox } from 'element-ui';
 
-function Confirmation(target, name, descriptor) {
-    let oldValue = descriptor.value;
-    descriptor.value = function(...args) {
-        MessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示')
-            .then(oldValue.bind(this, ...args))
-            .catch(() => {});
-    };
+export function Confirmation(message) {
+    return function(target, name, descriptor) {
+        let oldValue = descriptor.value;
+        descriptor.value = function(...args) {
+            MessageBox.confirm(message, '提示')
+                .then(oldValue.bind(this, ...args))
+                .catch(() => {});
+        };
 
-    return descriptor;
+        return descriptor;
+    }
 }
+@Confirmation('此操作将永久删除该文件, 是否继续?')
